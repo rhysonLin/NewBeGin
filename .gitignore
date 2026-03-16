@@ -1,0 +1,29 @@
+# UE5.7 官方忽略目录
+Binaries/
+Build/
+DerivedDataCache/
+Intermediate/
+Saved/
+Platforms/
+Plugins/*/Binaries/
+Plugins/*/Intermediate/
+Plugins/*/ThirdParty/
+
+# 引擎生成文件
+*.generated.h
+*.generated.cpp
+
+# 编辑器/IDE 缓存
+.vs/
+.vscode/
+*.sln
+*.suo
+*.user
+*.vcxproj
+*.vcxproj.filters
+.DS_Store
+Thumbs.db
+
+# 日志与缓存
+Logs/
+*.log
