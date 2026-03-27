@@ -16,10 +16,12 @@
 #include "NewBeGin.h"
 
 // ✅ GAS include
+
 #include "AbilitySystemComponent.h"
 #include "GAS/PlayerState/NewBeGinPlayerState.h"
 #include "GAS/Attributes/NewBeGinAttributeSet.h"
 #include "GAS/ASC/NewBeGinAbilitySystemComponent.h"
+
 
 ANewBeGinCharacter::ANewBeGinCharacter()
 {
@@ -96,6 +98,11 @@ void ANewBeGinCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 		if (AttackAction)
 		{
 			EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &ANewBeGinCharacter::Attack);
+		}
+		// Test Damage
+		if (TestDamageAction)
+		{
+			EnhancedInputComponent->BindAction(TestDamageAction, ETriggerEvent::Started, this, &ANewBeGinCharacter::TestDamage);
 		}
 	}
 	else
@@ -301,4 +308,35 @@ void ANewBeGinCharacter::InitGAS()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("[GAS] Init Attributes failed: AttributeSet is null"));
 	}
+}
+void ANewBeGinCharacter::TestDamage(const FInputActionValue& Value)
+{
+	ANewBeGinPlayerState* PS = GetPlayerState<ANewBeGinPlayerState>();
+	if (!PS)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[TestDamage] PlayerState is null"));
+		return;
+	}
+
+	UNewBeGinAttributeSet* AS = PS->GetAttributeSet();
+	if (!AS)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[TestDamage] AttributeSet is null"));
+		return;
+	}
+
+	UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
+	if (!ASC)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[TestDamage] ASC is null"));
+		return;
+	}
+
+	const float OldHealth = AS->GetHealth();
+	const float MaxHealth = AS->GetMaxHealth();
+	const float NewHealth = FMath::Clamp(OldHealth - 10.f, 0.f, MaxHealth);
+
+	ASC->SetNumericAttributeBase(AS->GetHealthAttribute(), NewHealth);
+
+	UE_LOG(LogTemp, Warning, TEXT("[TestDamage] Player Health: %.1f -> %.1f"), OldHealth, NewHealth);
 }

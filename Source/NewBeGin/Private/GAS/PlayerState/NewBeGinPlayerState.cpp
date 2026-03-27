@@ -35,3 +35,22 @@ UNewBeGinAttributeSet* ANewBeGinPlayerState::GetAttributeSet() const
 {
 	return AttributeSet;
 }
+float ANewBeGinPlayerState::GetHealthValue() const
+{
+	if (!AttributeSet)
+	{
+		return 0.f;
+	}
+
+	return AttributeSet->GetHealth();
+}
+
+float ANewBeGinPlayerState::GetMaxHealthValue() const
+{
+	if (!AttributeSet)
+	{
+		return 0.f;
+	}
+
+	return AttributeSet->GetMaxHealth();
+}

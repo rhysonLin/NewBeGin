@@ -1,5 +1,7 @@
 #include "GAS/Attributes/NewBeGinAttributeSet.h"
 #include "Net/UnrealNetwork.h"
+#include "GAS/Characters/NewBeGinEnemyCharacter.h"
+#include "AbilitySystemComponent.h"
 #include "GameplayEffectExtension.h"
 
 UNewBeGinAttributeSet::UNewBeGinAttributeSet()
@@ -81,6 +83,21 @@ void UNewBeGinAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCa
 				LocalDamage,
 				NewHealth,
 				GetMaxHealth());
+
+			// 如果血量归零，尝试让拥有者死亡
+			if (NewHealth <= 0.f)
+			{
+				if (UAbilitySystemComponent* ASC = GetOwningAbilitySystemComponent())
+				{
+					if (AActor* AvatarActor = ASC->GetAvatarActor())
+					{
+						if (ANewBeGinEnemyCharacter* Enemy = Cast<ANewBeGinEnemyCharacter>(AvatarActor))
+						{
+							Enemy->Die();
+						}
+					}
+				}
+			}
 		}
 	}
 }

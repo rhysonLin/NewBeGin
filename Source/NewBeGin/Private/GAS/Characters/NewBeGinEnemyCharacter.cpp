@@ -4,6 +4,9 @@
 #include "GAS/ASC/NewBeGinAbilitySystemComponent.h"
 #include "GAS/Attributes/NewBeGinAttributeSet.h"
 
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+
 ANewBeGinEnemyCharacter::ANewBeGinEnemyCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -28,7 +31,7 @@ void ANewBeGinEnemyCharacter::BeginPlay()
 
 	if (AbilitySystemComponent)
 	{
-		// 对敌人来说：
+		// 对敌人：
 		// Owner = 自己
 		// Avatar = 自己
 		AbilitySystemComponent->NB_InitAbilityActorInfo(this, this);
@@ -49,4 +52,37 @@ void ANewBeGinEnemyCharacter::BeginPlay()
 UAbilitySystemComponent* ANewBeGinEnemyCharacter::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
+}
+
+void ANewBeGinEnemyCharacter::Die()
+{
+	// 防止重复死亡
+	if (bIsDead)
+	{
+		return;
+	}
+
+	bIsDead = true;
+
+	UE_LOG(LogTemp, Warning, TEXT("[EnemyDeath] %s died"), *GetName());
+
+	// 1. 关闭胶囊碰撞
+	if (UCapsuleComponent* Capsule = GetCapsuleComponent())
+	{
+		Capsule->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		
+	}
+
+	// 2. 停止移动
+	if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
+	{
+		MoveComp->DisableMovement();
+		MoveComp->StopMovementImmediately();
+	}
+
+	// 3. 先简单隐藏（后面你可以改成播放死亡动画）
+	SetActorHiddenInGame(true);
+
+	// 4. 延迟销毁，方便你看到日志
+	SetLifeSpan(2.0f);
 }

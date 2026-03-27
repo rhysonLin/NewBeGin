@@ -69,8 +69,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* AttackAction;
 
+	UPROPERTY(EditAnywhere, Category="Input")
+	UInputAction* TestDamageAction;
+	
 	UPROPERTY(EditAnywhere, Category="Combat")
 	UAnimMontage* AttackMontage;
+
 
 public:
 	/** Constructor */
@@ -90,6 +94,7 @@ protected:
 	void StopAim();
 
 	void Attack(const FInputActionValue& Value);
+	void TestDamage(const FInputActionValue& Value);
 
 public:
 	/** Handles move inputs from either controls or UI interfaces */
@@ -108,6 +113,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void DoJumpEnd();
 
+	
+	
 	/** 处理攻击命中（你原来的）*/
 	UFUNCTION(BlueprintCallable, Category="Combat")
 	void DoAttackHitTrace();

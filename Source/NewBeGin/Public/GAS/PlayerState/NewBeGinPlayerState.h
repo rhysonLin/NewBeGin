@@ -27,11 +27,19 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	/** 获取自定义 ASC */
+	UFUNCTION(BlueprintCallable, Category="GAS")
 	UNewBeGinAbilitySystemComponent* GetASC() const;
 
 	/** 获取属性集 */
+	UFUNCTION(BlueprintCallable, Category="GAS")
 	UNewBeGinAttributeSet* GetAttributeSet() const;
 
+	UFUNCTION(BlueprintPure, Category="GAS")
+	float GetHealthValue() const;
+
+	UFUNCTION(BlueprintPure, Category="GAS")
+	float GetMaxHealthValue() const;
+	
 protected:
 	/** GAS 核心组件 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="GAS")
