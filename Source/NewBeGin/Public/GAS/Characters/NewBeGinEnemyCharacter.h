@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+
 #include "NewBeGinEnemyCharacter.generated.h"
 
 class UAbilitySystemComponent;
@@ -39,6 +40,7 @@ protected:
 	/** 是否已经死亡，避免重复执行死亡逻辑 */
 	UPROPERTY(VisibleAnywhere, Category="Death")
 	bool bIsDead = false;
+	
 
 public:
 	UNewBeGinAbilitySystemComponent* GetASC() const { return AbilitySystemComponent; }
